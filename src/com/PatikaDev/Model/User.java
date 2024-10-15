@@ -105,13 +105,24 @@ public class User {
             pr.setString(2,uname);
             pr.setString(3,pass);
             pr.setString(4,type);
-            pr.close();
             return pr.executeUpdate() !=-1;
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean remove(int id){
+        String query = "DELETE FROM user WHERE id = ?";
+        try {
+            PreparedStatement pr =DBConnecter.getInstance().prepareStatement(query);
+            pr.setInt(1,id);
+            return pr.executeUpdate() !=-1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static User getFetch(String uname){
@@ -135,5 +146,21 @@ public class User {
 
         return obj;
 
+    }
+
+    public static boolean update(int id,String name, String uname,String pass, String type) {
+        String query = "UPDATE user SET name=?, uname =?,pass=?,type=? WHERE id=?";
+
+        try {
+            PreparedStatement pr = DBConnecter.getInstance().prepareStatement(query);
+            pr.setString(1,name);
+            pr.setString(2,uname);
+            pr.setString(3,pass);
+            pr.setString(4,type);
+            pr.setInt(5,id);
+            return pr.executeUpdate() !=-1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
