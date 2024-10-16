@@ -148,6 +148,29 @@ public class User {
 
     }
 
+    public static User getFetch(int id){
+        User obj = null;
+        String query = "SELECT * FROM user where id = ?";
+
+        try {
+            PreparedStatement pr = DBConnecter.getInstance().prepareStatement((query));
+            pr.setInt(1,id);
+            ResultSet rs= pr.executeQuery();
+
+            while(rs.next()){
+                obj = new User(rs.getInt("id")
+                        , rs.getString("name"), rs.getString("uname"),
+                        rs.getString("pass"), rs.getString("type"));
+                break;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return obj;
+
+    }
+
     public static boolean update(int id,String name, String uname,String pass, String type) {
         String query = "UPDATE user SET name=?, uname =?,pass=?,type=? WHERE id=?";
 
